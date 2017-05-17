@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+    	<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<title>Quadrado do Meio</title>
+
+    	<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+	</head>
+	<body>    
+		<div class="col-md-12" style="margin-top: 2rem">
+  			<div class="panel-group">
+				<div class="panel panel-default">
+      				<div class="panel-heading">Quadrado do Meio</div>
+      					<div class="panel-body">
+						<div class="row ">
+				  			<div class="col-lg-12">					    		 
+				    			<div class="input-group">
+			    					<label>Valor inicial</label>
+			      					<input id="semente" type="number" class="form-control" placeholder="Semente inicial" value="44214">					      					      					     
+				    			</div>
+				    			<br>				    					    
+				    			<div class="input-group">	
+				    				<label>Quantidade de sementes</label>				    
+				      				<input id="amostras" type="number" min="0" class="form-control" placeholder="Amostras" value="4">					      					      				         
+				    			</div>
+								<br>
+				    			<div class="input-group">	
+				    				<label>Quantidade de amostras</label>				    
+				      				<input id="qtd" type="number" min="0" class="form-control" placeholder="Qtd" value="500">					      					      					      		
+				    			</div>
+				    			<div class="row col-md-6" style="margin-top: 1rem;">
+					    			<div>	
+				        				<button class="btn btn-primary" type="button" id="botao_limpar">Limpar</button>					        					       			      				
+				        				<button class="btn btn-primary" type="button" id="botao">Go!</button>					        					       
+				      				</div>
+			      				</div>
+								<ul class="nav nav-pills pull-right" style="padding: 1rem">
+								  <li class="active"><a href="index.html">Voltar</a></li>					  					  
+								</ul> 			      								    											
+			    			</div>
+		    			</div>    					      				
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+  			<div class="panel-group">
+				<div class="panel panel-default">
+      				<div class="panel-heading">Resultados</div>
+  					<div class="panel-body">      							
+						<div class="row" style="margin-top: 2rem;">
+							<div class="col-lg-6">					    					    
+								<div id="results" class="hide col-md-6"></div>
+								<div id="sementes" class="hide col-md-6">
+				    				<p>Sementes:</p>
+				    			</div>
+				  			</div>
+						</div> 
+						<div class="row" style="margin-top: 2rem;">
+							<div class="col-lg-6">					    										
+				    			<div id="numbers" class="hide col-md-6">
+									<p>Números<p>
+								</div>
+				  			</div>
+						</div> 	
+					</div>		
+				</div>
+			</div>
+		</div>
+    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+  <script type="text/javascript">
+  		$('#botao_limpar').on('click', function(){
+  			$('#results').html('');
+  			$('#sementes').html('');
+			$('#numbers').html('');
+  		});
+
+  		$('#botao').on('click', function(){
+	  		$('#botao_limpar').click();
+	  		$('#results').removeClass('hide');	  	
+	  		$values = [];
+	  		$novaSemente = '';
+	  		$sementes = [];
+	  		$values[0] = parseInt($('#semente').val());
+	  		$qtd_amostras = parseInt($('#amostras').val());
+	  		$('#sementes').append('<p>Sementes</p>');
+	  		$('#results').append('<p>'+0+' => '+$values[0]+'</p>');
+			$tamanho = $('#semente').val().length;
+	  		for (var i = 1; i < $qtd_amostras; i++) {		  		
+	  			if(i == 1){
+	  				$atual =  Math.pow($values[i-1],2);	  			  		
+	  			}else{
+	  				$atual =  Math.pow($novaSemente,2);
+	  				$novaSemente = '';
+	  			}	  						
+				
+	  			for (var j = Math.ceil($atual.toString().length)-$tamanho; j < Math.ceil($atual.toString().length); j++) {	  			
+					$novaSemente = $novaSemente + $atual.toString()[j];							
+	  			}  				
+								
+				if(i == 1){
+					$novaSemente = $values[0];
+				}			
+				$values[i] = Math.pow($novaSemente,2);	  	
+				$sementes.push(parseInt($novaSemente));		
+				
+				$('#results').append('<p>'+(i)+'º ('+$novaSemente+'²) => '+$values[i]+'</p>');			  		
+	  		}
+	  		$('#sementes').removeClass('hide');
+	  		for (var i = 0; i < $sementes.length; i++) {
+		  		$('#sementes').append('<p>'+$sementes[i]+'</p>');				
+				$('#numbers').removeClass('hide');
+				for(var h = 0; h<$('#qtd').val(); h++){
+					$sortiado = Math.floor((Math.random($sementes[i]) * 100) + 1);
+					$('#numbers').append('<p class="num_sorteado">'+h+'=>'+$sortiado+'</p>');
+					$sortiado = '';
+				}				
+	  		}	  	
+	  });    
+  </script>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+    	<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<title>Congruente Linear Adaptado</title>
+
+    	<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+	</head>
+	<body>    
+		<div class="col-md-12" style="margin-top: 2rem">
+  			<div class="panel-group">
+				<div class="panel panel-default">
+      				<div class="panel-heading">Congruente Linear Adaptado</div>
+      					<div class="panel-body">      					
+  						X<sub>n+1</sub> = (a*X<sub>n</sub>+b) % m      					      				
+						<div class="row ">
+				  			<div class="col-lg-6">					    		 
+				    			<div class="input-group">
+			    					<label>A</label>
+			      					<input id="valor_a" type="number" class="form-control" placeholder="Valor de A">					      					      					     
+				    			</div>
+				    			<br>				    					    
+				    			<div class="input-group">	
+				    				<label>M</label>				    
+				      				<input id="valor_m" type="number" min="0" class="form-control" placeholder="Valor de M">					      					      					      			
+				    			</div>
+								<br>						
+			    			</div>
+		    			</div>
+		    			<div class="row col-md-6" style="margin-top: 1rem;">
+			    			<div>	
+		        				<button class="btn btn-primary" type="button" id="botao_limpar">Limpar</button>					        					       			      				
+		        				<button class="btn btn-primary" type="button" id="botao">Go!</button>					        					       
+		      				</div>
+	      				</div>
+						<ul class="nav nav-pills pull-right" style="padding: 1rem">
+						  <li class="active"><a href="index.html">Voltar</a></li>					  					  
+						</ul>    					      				
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+  			<div class="panel-group">
+				<div class="panel panel-default">
+      				<div class="panel-heading">Resultados</div>
+  					<div class="panel-body">      							
+						<div class="row" style="margin-top: 2rem;">
+							<div class="col-lg-6">					    					    
+								<div id="results" class="hide col-md-6"></div>
+								<div id="sementes" class="hide col-md-6">
+				    				<p>Sementes:</p>
+				    			</div>
+				  			</div>
+						</div> 
+						<div class="row" style="margin-top: 2rem;">
+							<div class="col-lg-6">					    										
+				    			<div id="numbers" class="hide col-md-6">
+									<p>Números<p>
+								</div>
+				  			</div>
+						</div> 	
+					</div>		
+				</div>
+			</div>
+		</div>		
+    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+  <script type="text/javascript">
+  		$('#botao_limpar').on('click', function(){
+  			$('#results').html('');
+  			$('#sementes').html('');
+			$('#numbers').html('');
+  		});
+
+		$('#botao').on('click', function(){			
+			var X = Math.pow(parseInt($('#valor_a').val()), 1) % parseInt($('#valor_m').val());	
+  			console.log(X);
+		});    
+  </script>
+</html>
