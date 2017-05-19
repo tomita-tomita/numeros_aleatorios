@@ -15,19 +15,31 @@
 				<div class="panel panel-default">
       				<div class="panel-heading">Congruente Linear Adaptado</div>
       					<div class="panel-body">      					
-  						X<sub>n+1</sub> = (a*X<sub>n</sub>+b) % m      					      				
+  						X<sub>n+1</sub> = (a*X<sub>n</sub>+b) % m    
+						<!--<br>a = 7<sup>5</sup> = 16807
+						<br>m = 2<sup>31</sup>-1 => 2147483647-->
 						<div class="row ">
 				  			<div class="col-lg-6">					    		 
 				    			<div class="input-group">
-			    					<label>A</label>
-			      					<input id="valor_a" type="number" class="form-control" placeholder="Valor de A">					      					      					     
+			    					<label>a</label>
+			      					<input id="valor_a" type="number" class="form-control" placeholder="Valor de A" value="16807" disabled="disabled">					      					      					     
 				    			</div>
 				    			<br>				    					    
 				    			<div class="input-group">	
-				    				<label>M</label>				    
-				      				<input id="valor_m" type="number" min="0" class="form-control" placeholder="Valor de M">					      					      					      			
+				    				<label>m</label>				    
+				      				<input id="valor_m" type="number" class="form-control" placeholder="Valor de M" value="2147483647" disabled="disabled">					      					      					      			
 				    			</div>
-								<br>						
+								<br>
+				    			<div class="input-group">	
+				    				<label>b</label>				    
+				      				<input id="valor_b" type="number" max="2147483647" class="form-control" placeholder="Valor de b">					      					      					      			
+				    			</div>
+								<br>
+				    			<div class="input-group">	
+				    				<label>Quantidade de amostras</label>				    
+				      				<input id="qtd_amostras" type="number" class="form-control" min="0">					      					      					      			
+				    			</div>
+								<br>								
 			    			</div>
 		    			</div>
 		    			<div class="row col-md-6" style="margin-top: 1rem;">
@@ -51,15 +63,13 @@
 						<div class="row" style="margin-top: 2rem;">
 							<div class="col-lg-6">					    					    
 								<div id="results" class="hide col-md-6"></div>
-								<div id="sementes" class="hide col-md-6">
-				    				<p>Sementes:</p>
+								<div id="sementes" class="hide col-md-6">				    				
 				    			</div>
 				  			</div>
 						</div> 
 						<div class="row" style="margin-top: 2rem;">
 							<div class="col-lg-6">					    										
-				    			<div id="numbers" class="hide col-md-6">
-									<p>Números<p>
+				    			<div id="numbers" class="hide col-md-6">									
 								</div>
 				  			</div>
 						</div> 	
@@ -77,9 +87,27 @@
 			$('#numbers').html('');
   		});
 
-		$('#botao').on('click', function(){			
-			var X = Math.pow(parseInt($('#valor_a').val()), 1) % parseInt($('#valor_m').val());	
-  			console.log(X);
+		$('#botao').on('click', function(){
+			$('#botao_limpar').click();
+			$a = $('#valor_a').val();
+			$m = $('#valor_m').val();
+			$b = $('#valor_b').val();
+			$qtd = $('#qtd_amostras').val();
+			$sementes = [];
+			$sementes[0] = Math.floor((Math.random() * $m) - 1);
+			for(var i = 1; i < 3; i++){
+				$sementes[i] = (($a*$sementes[i-1]) + $b) % parseInt($m);
+			}
+			$('#sementes').removeClass('hide');
+			$('#numbers').removeClass('hide');
+			for(var j = 0; j < $sementes.length; j++){
+				$('#numbers').append('<p class=""><strong>Semente: '+$sementes[j]+'</strong></p>');
+				for(var k = 0; k < $qtd; k++){
+					$sortiado = Math.floor((Math.random($sementes[j]) * 100) + 1);
+					$('#numbers').append('<p class="num_sorteado">'+k+'=>'+$sortiado+'</p>');
+					$sortiado = null;
+				}
+			}
 		});    
   </script>
 </html>
