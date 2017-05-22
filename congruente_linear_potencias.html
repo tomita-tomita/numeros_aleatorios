@@ -20,45 +20,60 @@
 				  			<div class="col-lg-6">					    		 
 				    			<div class="input-group">
 			    					<label>A</label>
-			      					<input id="valor_a" type="number" class="form-control" placeholder="Valor de A">					      					      					     
+			      					<input id="valor_a" type="number" class="form-control" placeholder="Valor de A" value="23">					      					      					     
 				    			</div>
 				    			<br>				    					    
 				    			<div class="input-group col-md-4">	
 				    				<label>M</label>				    
-				      				<input id="valor_m" type="number" min="0" class="form-control" placeholder="Valor de M">					      					      					      					     
+				      				<input id="valor_m" type="number" class="form-control" disabled="disabled" placeholder="Valor de M" value="100000001">					      					      					      					     
 				    			</div>
 								<br>
+				    			<div class="input-group">	
+				    				<label>Quantidade de sementes</label>				    
+				      				<input id="qtd_sementes" type="number" min="0" class="form-control" placeholder="Amostras" value="3">
+				    			</div>
+								<br>								
 				    			<div class="input-group col-md-4">	
 				    				<label>Quantidade de amostras</label>				    
 				      				<input id="qtd" type="number" min="0" class="form-control" placeholder="Qtd" value="10">					      					      					      	     
 				    			</div>								
 			    			</div>
 		    			</div>
-		    			<div class="row" style="margin-top: 1rem;">
-			    			<div class="col-lg-6">			      							      					    
+		    			<div class="row col-md-6" style="margin-top: 1rem;">
+			    			<div>			      							      					    
 		        				<button class="btn btn-primary" type="button" id="botao_limpar">Limpar</button>					        					       			      				
 		        				<button class="btn btn-primary" type="button" id="botao">Go!</button>					        					       
 		      				</div>
 	      				</div>
-	      				<div class="row" style="margin-top: 2rem;">
-		      				<div class="col-lg-6">					    					    
-				    			<div id="results" class="hide col-md-6"></div>
-			    				<div id="sementes" class="hide col-md-6">
-				    				<p>Sementes:</p>
-				    			</div>
-				  			</div>
-						</div> 
-	      				<div class="row" style="margin-top: 2rem;">
-		      				<div class="col-lg-6">					    										
-				    			<div id="numbers" class="hide col-md-6">
-									<p>Números<p>
-								</div>
-				  			</div>
-						</div>     					      				
-					</div>
+						<ul class="nav nav-pills pull-right" style="padding: 1rem">
+						  <li class="active"><a href="index.html">Voltar</a></li>					  					  
+						</ul>  	 
+					</div>     				
 				</div>
 			</div>
 		</div>
+		<div class="col-md-12">
+  			<div class="panel-group">
+				<div class="panel panel-default">
+      				<div class="panel-heading">Resultados</div>
+  					<div class="panel-body">      							
+						<div class="row" style="margin-top: 2rem;">
+							<div class="col-lg-6">					    					    
+								<div id="results" class="hide col-md-6"></div>
+								<div id="sementes" class="hide col-md-6">				    				
+				    			</div>
+				  			</div>
+						</div> 
+						<div class="row" style="margin-top: 2rem;">
+							<div class="col-lg-6">					    										
+				    			<div id="numbers" class="hide col-md-6">									
+								</div>
+				  			</div>
+						</div> 	
+					</div>		
+				</div>
+			</div>
+		</div>			
     	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
   </body>
@@ -69,9 +84,26 @@
 			$('#numbers').html('');
   		});
 
-		$('#botao').on('click', function(){			
-			var X = Math.pow(parseInt($('#valor_a').val()), 1) % parseInt($('#valor_m').val());	
-  			console.log(X);
+		$('#botao').on('click', function(){		
+			$('#botao_limpar').click();
+			$qtd_sementes = $('#qtd_sementes').val();
+			$qtd_amostras = $('#qtd').val();
+			$valor_a = $('#valor_a').val();
+			$valor_m = $('#valor_m').val();
+			$sementes = [];
+			for(var i = 0; i < $qtd_sementes; i++){
+				$sementes[i] = (Math.pow($valor_a, i) % $valor_m);
+			}			
+			$('#sementes').removeClass('hide');
+			$('#numbers').removeClass('hide');			
+			for (var i = 0; i < $sementes.length; i++) {
+				$('#numbers').append('<p class=""><strong>Semente: '+$sementes[i]+'</strong></p>');
+				for(var k = 0; k < $qtd_amostras; k++){
+					$sortiado = Math.floor((Math.random($sementes[i]) * 100) + 1);
+					$('#numbers').append('<p class="num_sorteado">'+k+'=>'+$sortiado+'</p>');
+					$sortiado = null;
+				}
+			}
 		});    
   </script>
 </html>

@@ -87,9 +87,7 @@
 	  		$novaSemente = '';
 	  		$sementes = [];
 	  		$values[0] = parseInt($('#semente').val());
-	  		$qtd_amostras = parseInt($('#amostras').val());
-	  		$('#sementes').append('<p>Sementes</p>');
-	  		$('#results').append('<p>'+0+' => '+$values[0]+'</p>');
+	  		$qtd_amostras = parseInt($('#amostras').val());	  			  	
 			$tamanho = $('#semente').val().length;
 	  		for (var i = 1; i < $qtd_amostras; i++) {		  		
 	  			if(i == 1){
@@ -109,13 +107,13 @@
 				$values[i] = Math.pow($novaSemente,2);	  	
 				$sementes.push(parseInt($novaSemente));		
 				
-				$('#results').append('<p>'+(i)+'º ('+$novaSemente+'²) => '+$values[i]+'</p>');			  		
+				//$('#results').append('<p>'+(i)+'º ('+$novaSemente+'²) => '+$values[i]+'</p>');			  		
 	  		}
 	  		$('#sementes').removeClass('hide');
 	  		for (var i = 0; i < $sementes.length; i++) {
-		  		$('#sementes').append('<p>'+$sementes[i]+'</p>');				
+	  			$('#numbers').append('<p class=""><strong>Semente: '+$sementes[i]+'</strong></p>');		  				
 				$('#numbers').removeClass('hide');
-				for(var h = 0; h<$('#qtd').val(); h++){
+				for(var h = 0; h<$('#qtd').val(); h++){					
 					$sortiado = Math.floor((Math.random($sementes[i]) * 100) + 1);
 					$('#numbers').append('<p class="num_sorteado">'+h+'=>'+$sortiado+'</p>');
 					$sortiado = '';

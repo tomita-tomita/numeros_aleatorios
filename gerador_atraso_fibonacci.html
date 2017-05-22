@@ -4,7 +4,7 @@
     	<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-    	<title>Congruente Linear Adaptado</title>
+    	<title>Congruente Linear Multiplicativo</title>
 
     	<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -13,9 +13,9 @@
 		<div class="col-md-12" style="margin-top: 2rem">
   			<div class="panel-group">
 				<div class="panel panel-default">
-      				<div class="panel-heading">Congruente Linear Adaptado</div>
+      				<div class="panel-heading">Congruente Linear Multiplicativo</div>
       					<div class="panel-body">      					
-  						X<sub>n+1</sub> = (a*X<sub>n</sub>+b) % m
+  						X<sub>n+1</sub> = (a*X<sub>n</sub>) % m
 						<div class="row ">
 				  			<div class="col-lg-6">					    		 
 				    			<div class="input-group">
@@ -26,11 +26,6 @@
 				    			<div class="input-group">	
 				    				<label>m</label>				    
 				      				<input id="valor_m" type="number" class="form-control" placeholder="Valor de M" value="2147483647" disabled="disabled">					      					      					      			
-				    			</div>
-								<br>
-				    			<div class="input-group">	
-				    				<label>b</label>				    
-				      				<input id="valor_b" type="number" max="2147483647" class="form-control" placeholder="Valor de b">					      					      					      			
 				    			</div>
 								<br>
 				    			<div class="input-group">	
@@ -93,14 +88,13 @@
 		$('#botao').on('click', function(){
 			$('#botao_limpar').click();
 			$a = $('#valor_a').val();
-			$m = $('#valor_m').val();
-			$b = $('#valor_b').val();
+			$m = $('#valor_m').val();			
 			$qtd = $('#qtd_amostras').val();
 			$qtd_sementes = $('#qtd_sementes').val();
 			$sementes = [];
 			$sementes[0] = Math.floor((Math.random() * $m) - 1);
 			for(var i = 1; i < $qtd_sementes; i++){
-				$sementes[i] = (($a*$sementes[i-1]) + $b) % parseInt($m);
+				$sementes[i] = (($a*$sementes[i-1])) % parseInt($m);
 			}
 			$('#sementes').removeClass('hide');
 			$('#numbers').removeClass('hide');
