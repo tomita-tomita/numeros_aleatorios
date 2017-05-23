@@ -6,26 +6,193 @@
     	<meta name="viewport" content="width=device-width, initial-scale=1">
     	<title>Random()</title>
 
-    	<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    	<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">    	
 
 	</head>
-	<body>    
+	<body>
 		<div class="col-md-12" style="margin-top: 2rem">
   			<div class="panel-group">
 				<div class="panel panel-default">
-      				<div class="panel-heading">Algoritmos</div>
-					<ul class="nav nav-pills" style="padding: 1rem">
-					  <li class="active"><a href="quadrado_do_meio.html">Quadrado do Meio</a></li>
-					  <li class="active"><a href="congruente_linear_adaptado.html">Congruente Linear (Adaptado)</a></li>
-					  <li class="active"><a href="congruente_linear_potencias.html">Congruente Linear (Potências)</a></li>					  
-					  <li class="active"><a href="congruente_linear_multiplicativo.html">Congruente Linear (Multiplicativo)</a></li>					  
-					  <li class="active"><a href="gerador_atraso_fibonacci.html">Atraso Fibonacci</a></li>					  
-					  <li class="active"><a href="nosso.html">Nosso</a></li>					  
-					</ul> 
+      				<div class="panel-heading"></div>
+      					<div class="panel-body">
+						<div class="row ">
+				  			<div class="col-md-6">					    		 
+				    			<div class="input-group">
+			    					<label>1ª semente inicial</label>
+			      					<input id="primeira_semente_inicial" type="number" class="form-control" placeholder="Primeira Semente inicial">					      					      		
+				    			</div>
+				    			<br>				    					    
+				    			<div class="input-group">	
+				    				<label>2ª semente inicial</label>			    				
+				      				<input id="segunda_semente_inicial" type="number" class="form-control" placeholder="Segunda semente inicial">					      					      			
+				    			</div>
+								<br>
+				    			<div class="input-group">	
+				    				<label>a</label>		    				
+				      				<input id="valor_a" type="number" class="form-control" placeholder="Valor para a" value="16807">					      					      			
+				    			</div>
+								<br>
+				    			<div class="input-group">	
+				    				<label>b</label>			    				
+				      				<input id="valor_b" type="number" class="form-control" placeholder="Valor para b">					      					     
+				    			</div>
+								<br>
+				    			<div class="input-group">	
+				    				<label>m</label>			    				
+				      				<input id="valor_m" type="number" class="form-control" placeholder="Valor para m" value="2147483647">					      					      
+				    			</div>
+								<br>																								
+				    			<div class="input-group">		
+				    				<label>Quantidade de amostras</label>		    				
+				      				<input id="qtd_amostras" type="number"  class="form-control" placeholder="Quantidade" value="10">					      					      					
+				    			</div>
+				    			<div class="row col-md-6" style="margin-top: 1rem;">
+					    			<div>	
+				        				<button class="btn btn-primary" type="button" id="botao_limpar">Limpar</button>					        					       			      				
+				        				<button class="btn btn-primary" type="button" id="botao">Go!</button>					        					       
+				      				</div>
+			      				</div>		      								    											
+			    			</div>
+			    			<div class="col-lg-6">
+								<strong>Congruente Linear Adaptado</strong><br>
+									<span style="padding-left: 2rem">X<sub>n+1</sub> = (a*X<sub>n</sub>+b) % m</span>
+									<br><br>
+								<strong>Congruente Linear Multiplicativo</strong><br>
+									<span style="padding-left: 2rem">X<sub>n+1</sub> = (a*X<sub>n</sub>) % m</span>
+									<br><br>
+								<strong>Congruente Linear Potências</strong><br>
+									<span style="padding-left: 2rem">X<sub>n</sub> = a<sup>n</sup> % m</span>
+								<div style="margin-top: 5rem">	
+									<table class="table-bordered">
+										<thead>
+											<tr>
+												<th style="text-align: center;">a</th>	
+												<th style="text-align: center">m</th>	
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>7⁵</td>																
+												<td>2³¹-1</td>
+											</tr>											
+										</tbody>																			
+									</table>
+								</div>
+			    			</div>
+		    			</div>    					      				
+					</div>
 				</div>
 			</div>
 		</div>
+		<div class="col-md-12">
+  			<div class="panel-group">
+				<div class="panel panel-default">
+      				<div class="panel-heading">Resultados</div>
+  					<div class="panel-body">      							
+						<div class="row">
+							<div class="col-lg-6">					    										
+				    			<div id="numbers" class="hide col-md-6">									
+								</div>
+				  			</div>
+						</div> 	
+					</div>		
+				</div>
+			</div>
+		</div>		
     	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
   </body>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$primeiro_sortiado = Math.floor((Math.random() * 100) + 1);
+			$segundo_sortiado = Math.floor((Math.random() * 100) + 1);
+			$('#primeira_semente_inicial').val($primeiro_sortiado);
+			$('#segunda_semente_inicial').val($segundo_sortiado);
+		});
+
+		$('#botao_limpar').on('click', function(){					
+			$('#numbers').html('');
+		});
+
+		$('#botao').on('click', function(){
+			$('#botao_limpar').click();
+			$primeira_semente = $('#primeira_semente_inicial').val();
+			$segunda_semente = $('#segunda_semente_inicial').val();
+			$valor_a = $('#valor_a').val();
+			$valor_b = $('#valor_b').val();
+			$valor_m = $('#valor_m').val();
+			$quantidade_amostras = $('#qtd_amostras').val();			
+			$('#numbers').removeClass('hide');
+			linear_potencia($valor_a, $valor_m, $quantidade_amostras, $valor_b, $primeira_semente, $segunda_semente);
+		});    
+
+		function linear_potencia ($a, $m, $quantidade_amostras, $b, $primeira, $segunda){
+			$amostras = [];
+			$('#numbers').append('<p><strong>Linear Potencia</strong></p>');				
+			for(var i = 0; i < $quantidade_amostras; i++){				
+				$amostras[i] = (Math.pow($a, i) % $m);
+				$('#numbers').append('<p class="num_sorteado_potencia">'+i+' => '+$amostras[i]+'</p>');
+			}
+			linear_adaptado($a, $b, $m, $quantidade_amostras, $primeira, $segunda);	
+		};
+
+		function linear_adaptado ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
+			$amostras = [];
+			$amostras[0] = $primeira
+			$('#numbers').append('<p><strong>Linear Adaptado</strong></p>');
+			$('#numbers').append('<p class="num_sorteado">'+0+' => '+$amostras[0]+'</p>');
+			for(var i = 1; i < $quantidade_amostras; i++){							
+				$amostras[i] = (($a * $amostras[i-1]) + $b) % $m;
+				$('#numbers').append('<p class="num_sorteado_adaptado">'+i+'=>'+$amostras[i]+'</p>');
+			}			
+			linear_multiplicativo($a, $b, $m, $quantidade_amostras, $primeira, $segunda);
+		};
+
+		function linear_multiplicativo ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
+			$amostras = [];
+			$amostras[0] = $primeira;
+			$('#numbers').append('<p><strong>Linear Multiplicativo</strong></p>');
+			$('#numbers').append('<p class="num_sorteado">'+0+' => '+$amostras[0]+'</p>');
+			for(var i = 1; i < $quantidade_amostras; i++){							
+				$amostras[i] = ($a * $amostras[i-1]) % $m;
+				$('#numbers').append('<p class="num_sorteado_multi">'+i+'=>'+$amostras[i]+'</p>');
+			}
+			quadrado_meio($a, $b, $m, $quantidade_amostras, $primeira, $segunda);			
+		};
+
+		function quadrado_meio ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
+			$amostras = [];
+			$amostras[0] = $primeira;
+			$tamanho = $primeira.toString().length;			
+			$novaSemente = '';
+			$('#numbers').append('<p><strong>Quadrado do meio</strong></p>');
+			$('#numbers').append('<p class="num_sorteado">'+0+' => '+$amostras[0]+'</p>');			
+			for(var i = 1; i < $quantidade_amostras; i++){		
+	  			if(i == 1){
+	  				$atual =  Math.pow($amostras[i-1],2);	  			  		
+	  			}else{
+	  				$atual =  Math.pow($novaSemente,2);
+	  				$novaSemente = '';
+	  			}	  						
+				
+	  			for (var j = Math.ceil($atual.toString().length)-$tamanho; j < Math.ceil($atual.toString().length); j++) {	  			
+					$novaSemente = $novaSemente + $atual.toString()[j];							
+	  			}  				
+								
+				if(i == 1){
+					$novaSemente = $amostras[0];
+				}			
+				$amostras[i] = Math.pow($novaSemente,2);	  	
+				$amostras[i] =  parseInt($novaSemente);		
+
+				//$amostras[i] = ($a * $amostras[i-1]) % $m;
+				$('#numbers').append('<p class="num_sorteado_multi">'+i+'=>'+$amostras[i]+'</p>');
+			}			
+		};
+
+		function fibonacci (){
+
+		};
+
+  </script>  
 </html>
