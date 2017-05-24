@@ -19,37 +19,43 @@
 				  			<div class="col-md-6">					    		 
 				    			<div class="input-group">
 			    					<label>1ª semente inicial</label>
-			      					<input id="primeira_semente_inicial" type="number" class="form-control" placeholder="Primeira Semente inicial">					      					      		
+			      					<input id="primeira_inicial" type="number" class="form-control" placeholder="Primeira Semente inicial">					      					      		
 				    			</div>
 				    			<br>				    					    
 				    			<div class="input-group">	
 				    				<label>2ª semente inicial</label>			    				
-				      				<input id="segunda_semente_inicial" type="number" class="form-control" placeholder="Segunda semente inicial">					      					      			
+				      				<input id="segunda_inicial" type="number" class="form-control" placeholder="Segunda semente inicial">					      					      			
 				    			</div>
 								<br>
 				    			<div class="input-group">	
 				    				<label>a</label>		    				
-				      				<input id="valor_a" type="number" class="form-control" placeholder="Valor para a" value="16807">					      					      			
+				      				<input id="a" type="number" class="form-control" placeholder="Valor para a">					      					      			
 				    			</div>
 								<br>
 				    			<div class="input-group">	
 				    				<label>b</label>			    				
-				      				<input id="valor_b" type="number" class="form-control" placeholder="Valor para b">					      					     
+				      				<input id="b" type="number" class="form-control" placeholder="Valor para b">					      					     
 				    			</div>
 								<br>
 				    			<div class="input-group">	
 				    				<label>m</label>			    				
-				      				<input id="valor_m" type="number" class="form-control" placeholder="Valor para m" value="2147483647">					      					      
+				      				<input id="m" type="number" class="form-control" placeholder="Valor para m">					      					      
 				    			</div>
 								<br>																								
 				    			<div class="input-group">		
 				    				<label>Quantidade de amostras</label>		    				
-				      				<input id="qtd_amostras" type="number"  class="form-control" placeholder="Quantidade" value="10">					      					      					
+				      				<input id="qtd_amostras" type="number"  class="form-control" placeholder="Quantidade" value="3000">					      					      					
 				    			</div>
-				    			<div class="row col-md-6" style="margin-top: 1rem;">
+				    			<div class="row col-md-12" style="margin-top: 1rem;">
 					    			<div>	
-				        				<button class="btn btn-primary" type="button" id="botao_limpar">Limpar</button>					        					       			      				
-				        				<button class="btn btn-primary" type="button" id="botao">Go!</button>					        					       
+				        				<button class="btn btn-primary" type="button" id="botao_carregar">Carregar</button>					        					       			      		
+				        				<!-- <button class="btn btn-primary" type="button" id="botao_limpar">Limpar</button> -->					        					       			      		
+				        				<!-- <button class="btn btn-primary" type="button" id="botao">Sortear!</button> -->					        					       
+				        				<button class="btn btn-primary" type="button" id="linear_potencia">Linear Potencia</button>					        					       
+				        				<button class="btn btn-primary" type="button" id="linear_adaptado">Linear Adaptado</button>					        					       
+				        				<button class="btn btn-primary" type="button" id="linear_multiplicativo">Linear Multiplicativo</button>					        					
+				        				<button class="btn btn-primary" type="button" id="quadrado_meio">Quadrado do Meio</button>					        					       
+				        				<button class="btn btn-primary" type="button" id="fibonacci">Fibonacci</button>					        					       
 				      				</div>
 			      				</div>		      								    											
 			    			</div>
@@ -62,7 +68,14 @@
 									<br><br>
 								<strong>Congruente Linear Potências</strong><br>
 									<span style="padding-left: 2rem">X<sub>n</sub> = a<sup>n</sup> % m</span>
-								<div style="margin-top: 5rem">	
+									<br><br>
+								<strong>Quadrado do Meio</strong><br>
+									<span style="padding-left: 2rem">X<sub>n</sub> = (Meio de X<sub>n-1</sub>)²
+									<br><br>
+								<strong>Fibonacci</strong><br>						
+									<span style="padding-left: 2rem">X<sub>n</sub> = X<sub>n-i</sub> operação (%) X<sub>n-j</sub>
+									<br><br>
+								<div style="margin-top: 3rem">	
 									<table class="table-bordered">
 										<thead>
 											<tr>
@@ -106,58 +119,163 @@
 		$(document).ready(function(){
 			$primeiro_sortiado = Math.floor((Math.random() * 100) + 1);
 			$segundo_sortiado = Math.floor((Math.random() * 100) + 1);
-			$('#primeira_semente_inicial').val($primeiro_sortiado);
-			$('#segunda_semente_inicial').val($segundo_sortiado);
+			$('#primeira_inicial').val($primeiro_sortiado);
+			$('#segunda_inicial').val($segundo_sortiado);
 		});
 
-		$('#botao_limpar').on('click', function(){					
-			$('#numbers').html('');
+		$('#botao_carregar').on('click', function(){					
+			limpar();
+			$primeiro_sortiado = Math.floor((Math.random() * 100) + 1);
+			$segundo_sortiado = Math.floor((Math.random() * 100) + 1);		
+			$('#primeira_inicial').val($primeiro_sortiado);
+			$('#segunda_inicial').val($segundo_sortiado);						
 		});
 
-		$('#botao').on('click', function(){
-			$('#botao_limpar').click();
-			$primeira_semente = $('#primeira_semente_inicial').val();
-			$segunda_semente = $('#segunda_semente_inicial').val();
-			$valor_a = $('#valor_a').val();
-			$valor_b = $('#valor_b').val();
-			$valor_m = $('#valor_m').val();
+		$('#linear_potencia').on('click', function(){
+			limpar();
+			$primeira = $('#primeira_inicial').val();
+			$segunda = $('#segunda_inicial').val();
+			$a = $('#a').val();
+			$b = $('#b').val();
+			$m = $('#m').val();
 			$quantidade_amostras = $('#qtd_amostras').val();			
-			$('#numbers').removeClass('hide');
-			linear_potencia($valor_a, $valor_m, $quantidade_amostras, $valor_b, $primeira_semente, $segunda_semente);
-		});    
+			$('#numbers').removeClass('hide');	
+			linear_potencia($a, $m, $quantidade_amostras, $b, $primeira, $segunda);	
+		});
+
+		$('#linear_adaptado').on('click', function(){
+			limpar();
+			$primeira = $('#primeira_inicial').val();
+			$segunda = $('#segunda_inicial').val();
+			$a = $('#a').val();
+			$b = $('#b').val();
+			$m = $('#m').val();
+			$quantidade_amostras = $('#qtd_amostras').val();			
+			$('#numbers').removeClass('hide');		
+			linear_adaptado($a, $b, $m, $quantidade_amostras, $primeira, $segunda);	
+		});
+
+		$('#linear_multiplicativo').on('click', function(){
+			limpar();
+			$primeira = $('#primeira_inicial').val();
+			$segunda = $('#segunda_inicial').val();
+			$a = 16807;
+			$b = $('#b').val();
+			$m = 2147483647;
+			$quantidade_amostras = $('#qtd_amostras').val();			
+			$('#numbers').removeClass('hide');		
+			linear_multiplicativo($a, $b, $m, $quantidade_amostras, $primeira, $segunda);	
+		});
+
+		$('#quadrado_meio').on('click', function(){
+			limpar();
+			$primeira = $('#primeira_inicial').val();
+			$segunda = $('#segunda_inicial').val();
+			$a = $('#a').val();
+			$b = $('#b').val();
+			$m = $('#m').val();
+			$quantidade_amostras = $('#qtd_amostras').val();			
+			$('#numbers').removeClass('hide');	
+			quadrado_meio($a, $b, $m, $quantidade_amostras, $primeira, $segunda);			
+		});
+		
+		$('#fibonacci').on('click', function(){
+			limpar();
+			$primeira = $('#primeira_inicial').val();
+			$segunda = $('#segunda_inicial').val();
+			$a = $('#a').val();
+			$b = $('#b').val();
+			$m = $('#m').val();
+			$quantidade_amostras = $('#qtd_amostras').val();			
+			$('#numbers').removeClass('hide');	
+			fibonacci($a, $b, $m, $quantidade_amostras, $primeira, $segunda);			
+		});
+
+		function limpar(){
+			$('#numbers').html('');
+		};
 
 		function linear_potencia ($a, $m, $quantidade_amostras, $b, $primeira, $segunda){
 			$amostras = [];
-			$('#numbers').append('<p><strong>Linear Potencia</strong></p>');				
+			$('#numbers').append('<p><strong>Linear Potencia</strong></p>');						
 			for(var i = 0; i < $quantidade_amostras; i++){				
 				$amostras[i] = (Math.pow($a, i) % $m);
-				$('#numbers').append('<p class="num_sorteado_potencia">'+i+' => '+$amostras[i]+'</p>');
+				if(i == 499 || i == 1499 || i == 2999){
+					$s = i+1;
+					$esperado = (100/$amostras.length).toFixed(3);									
+					for(var j = 0; j < i; j++){
+
+					}
+					$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado - '+$s+' amostras</strong></p>');					
+				}
+				//$('#numbers').append('<p class="num_sorteado_potencia">'+i+' => '+$amostras[i]+'</p>');
 			}
-			linear_adaptado($a, $b, $m, $quantidade_amostras, $primeira, $segunda);	
+			//linear_adaptado($a, $b, $m, $quantidade_amostras, $primeira, $segunda);	
 		};
 
 		function linear_adaptado ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
 			$amostras = [];
 			$amostras[0] = $primeira
+			$a = 16807;
+			$b = $('#b').val();
+			$m = 2147483647;	
+			$first = [];
+			$se = [];
+			$te = [];
 			$('#numbers').append('<p><strong>Linear Adaptado</strong></p>');
-			$('#numbers').append('<p class="num_sorteado">'+0+' => '+$amostras[0]+'</p>');
+			$first.push($amostras[0]);
+			//$('#numbers').append('<p class="num_sorteado">'+0+' => '+$amostras[0]+'</p>');
 			for(var i = 1; i < $quantidade_amostras; i++){							
 				$amostras[i] = (($a * $amostras[i-1]) + $b) % $m;
-				$('#numbers').append('<p class="num_sorteado_adaptado">'+i+'=>'+$amostras[i]+'</p>');
-			}			
-			linear_multiplicativo($a, $b, $m, $quantidade_amostras, $primeira, $segunda);
+				if(i <= 499 ){
+					$first.push($amostras[i]);
+				}				
+				if(i > 499 && i <= 1499){
+					$se.push($amostras[i]);
+				}
+				if(i > 1499){
+					$te.push($amostras[i]);
+				}
+				//$('#numbers').append('<p class="num_sorteado_adaptado">'+i+'=>'+$amostras[i]+'</p>');
+			}
+			$esperado = (100/$first.length).toFixed(3);	
+			$teste = [];			
+
+			$first[1]= "82";		
+			$first[2]= "82";		
+			$first[3]= "82";		
+			$first[4]= "82";		
+			for(var i = 0; i < 500; i++){		
+				console.log(calcula_quantidade(i, $first[i], $first));
+
+			}
+			$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado - '+500+' amostras</strong></p>');
 		};
+
+		function calcula_quantidade ($indice, $numero, $array){
+			$cont = 1;	
+			for(var i = $indice+1; i < $array.length; i++){
+				if($array[i] == $numero){
+					$cont++;
+				}
+			}
+			return $cont;
+		}
 
 		function linear_multiplicativo ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
 			$amostras = [];
 			$amostras[0] = $primeira;
 			$('#numbers').append('<p><strong>Linear Multiplicativo</strong></p>');
-			$('#numbers').append('<p class="num_sorteado">'+0+' => '+$amostras[0]+'</p>');
+			//$('#numbers').append('<p class="num_sorteado">'+0+' => '+$amostras[0]+'</p>');
 			for(var i = 1; i < $quantidade_amostras; i++){							
 				$amostras[i] = ($a * $amostras[i-1]) % $m;
-				$('#numbers').append('<p class="num_sorteado_multi">'+i+'=>'+$amostras[i]+'</p>');
+				if(i == 499 || i == 1499 || i == 2999){
+					$s = i+1;
+					$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado - '+$s+' amostras</strong></p>');
+				}				
+				//$('#numbers').append('<p class="num_sorteado_multi">'+i+'=>'+$amostras[i]+'</p>');
 			}
-			quadrado_meio($a, $b, $m, $quantidade_amostras, $primeira, $segunda);			
+			//quadrado_meio($a, $b, $m, $quantidade_amostras, $primeira, $segunda);			
 		};
 
 		function quadrado_meio ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
@@ -166,7 +284,7 @@
 			$tamanho = $primeira.toString().length;			
 			$novaSemente = '';
 			$('#numbers').append('<p><strong>Quadrado do meio</strong></p>');
-			$('#numbers').append('<p class="num_sorteado">'+0+' => '+$amostras[0]+'</p>');			
+			//$('#numbers').append('<p class="num_sorteado">'+0+' => '+$amostras[0]+'</p>');			
 			for(var i = 1; i < $quantidade_amostras; i++){		
 	  			if(i == 1){
 	  				$atual =  Math.pow($amostras[i-1],2);	  			  		
@@ -182,16 +300,29 @@
 				if(i == 1){
 					$novaSemente = $amostras[0];
 				}			
-				$amostras[i] = Math.pow($novaSemente,2);	  	
-				$amostras[i] =  parseInt($novaSemente);		
-
-				//$amostras[i] = ($a * $amostras[i-1]) % $m;
-				$('#numbers').append('<p class="num_sorteado_multi">'+i+'=>'+$amostras[i]+'</p>');
-			}			
+				$amostras[i] = Math.pow($novaSemente,2);	  						
+				if(i == 499 || i == 1499 || i == 2999){
+					$s = i+1;
+					$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado - '+$s+' amostras</strong></p>');
+				}		
+				//$('#numbers').append('<p class="num_sorteado_multi">'+i+'=>'+$amostras[i]+'</p>');
+			}
+			//fibonacci($a, $b, $m, $quantidade_amostras, $primeira, $segunda);			
 		};
 
-		function fibonacci (){
-
+		function fibonacci ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
+			$amostras = [];
+			$amostras[0] = $primeira;
+			$amostras[1] = $segunda;
+			$('#numbers').append('<p><strong>Fibonacci</strong></p>');	
+			for(var i = 2; i < $quantidade_amostras; i++){							
+				$amostras[i] = $amostras[i-2] % $amostras[i-1];							
+				if(i == 499 || i == 1499 || i == 2999){
+					$s = i+1;
+					$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado - '+$s+' amostras</strong></p>');
+				}				
+				//$('#numbers').append('<p class="num_sorteado_multi">'+i+'=>'+$amostras[i]+'</p>');
+			}			
 		};
 
   </script>  
