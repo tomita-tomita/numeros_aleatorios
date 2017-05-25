@@ -199,18 +199,9 @@
 			$amostras = [];
 			$('#numbers').append('<p><strong>Linear Potencia</strong></p>');						
 			for(var i = 0; i < $quantidade_amostras; i++){				
-				$amostras[i] = (Math.pow($a, i) % $m);
-				if(i == 499 || i == 1499 || i == 2999){
-					$s = i+1;
-					$esperado = (100/$amostras.length).toFixed(3);									
-					for(var j = 0; j < i; j++){
-
-					}
-					$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado - '+$s+' amostras</strong></p>');					
-				}
-				//$('#numbers').append('<p class="num_sorteado_potencia">'+i+' => '+$amostras[i]+'</p>');
+				$amostras[i] = (Math.pow($a, i) % $m);				
 			}
-			//linear_adaptado($a, $b, $m, $quantidade_amostras, $primeira, $segunda);	
+			calcula_chi_quadradido($amostras);
 		};
 
 		function linear_adaptado ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
@@ -219,63 +210,21 @@
 			$a = 16807;
 			$b = $('#b').val();
 			$m = 2147483647;	
-			$first = [];
-			$se = [];
-			$te = [];
-			$('#numbers').append('<p><strong>Linear Adaptado</strong></p>');
-			$first.push($amostras[0]);
-			//$('#numbers').append('<p class="num_sorteado">'+0+' => '+$amostras[0]+'</p>');
+			$('#numbers').append('<p><strong>Linear Adaptado</strong></p>');				
 			for(var i = 1; i < $quantidade_amostras; i++){							
 				$amostras[i] = (($a * $amostras[i-1]) + $b) % $m;
-				if(i <= 499 ){
-					$first.push($amostras[i]);
-				}				
-				if(i > 499 && i <= 1499){
-					$se.push($amostras[i]);
-				}
-				if(i > 1499){
-					$te.push($amostras[i]);
-				}
-				//$('#numbers').append('<p class="num_sorteado_adaptado">'+i+'=>'+$amostras[i]+'</p>');
 			}
-			$esperado = (100/$first.length).toFixed(3);	
-			$teste = [];			
-
-			$first[1]= "82";		
-			$first[2]= "82";		
-			$first[3]= "82";		
-			$first[4]= "82";		
-			for(var i = 0; i < 500; i++){		
-				console.log(calcula_quantidade(i, $first[i], $first));
-
-			}
-			$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado - '+500+' amostras</strong></p>');
+			calcula_chi_quadradido($amostras);							
 		};
-
-		function calcula_quantidade ($indice, $numero, $array){
-			$cont = 1;	
-			for(var i = $indice+1; i < $array.length; i++){
-				if($array[i] == $numero){
-					$cont++;
-				}
-			}
-			return $cont;
-		}
 
 		function linear_multiplicativo ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
 			$amostras = [];
 			$amostras[0] = $primeira;
-			$('#numbers').append('<p><strong>Linear Multiplicativo</strong></p>');
-			//$('#numbers').append('<p class="num_sorteado">'+0+' => '+$amostras[0]+'</p>');
+			$('#numbers').append('<p><strong>Linear Multiplicativo</strong></p>');			
 			for(var i = 1; i < $quantidade_amostras; i++){							
-				$amostras[i] = ($a * $amostras[i-1]) % $m;
-				if(i == 499 || i == 1499 || i == 2999){
-					$s = i+1;
-					$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado - '+$s+' amostras</strong></p>');
-				}				
-				//$('#numbers').append('<p class="num_sorteado_multi">'+i+'=>'+$amostras[i]+'</p>');
+				$amostras[i] = ($a * $amostras[i-1]) % $m;					
 			}
-			//quadrado_meio($a, $b, $m, $quantidade_amostras, $primeira, $segunda);			
+			calcula_chi_quadradido($amostras);
 		};
 
 		function quadrado_meio ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
@@ -283,8 +232,7 @@
 			$amostras[0] = $primeira;
 			$tamanho = $primeira.toString().length;			
 			$novaSemente = '';
-			$('#numbers').append('<p><strong>Quadrado do meio</strong></p>');
-			//$('#numbers').append('<p class="num_sorteado">'+0+' => '+$amostras[0]+'</p>');			
+			$('#numbers').append('<p><strong>Quadrado do meio</strong></p>');			
 			for(var i = 1; i < $quantidade_amostras; i++){		
 	  			if(i == 1){
 	  				$atual =  Math.pow($amostras[i-1],2);	  			  		
@@ -300,14 +248,10 @@
 				if(i == 1){
 					$novaSemente = $amostras[0];
 				}			
-				$amostras[i] = Math.pow($novaSemente,2);	  						
-				if(i == 499 || i == 1499 || i == 2999){
-					$s = i+1;
-					$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado - '+$s+' amostras</strong></p>');
-				}		
-				//$('#numbers').append('<p class="num_sorteado_multi">'+i+'=>'+$amostras[i]+'</p>');
+				$amostras[i] = Math.pow($novaSemente,2);	  										
 			}
-			//fibonacci($a, $b, $m, $quantidade_amostras, $primeira, $segunda);			
+			console.log($amostras);
+			calcula_chi_quadradido($amostras);
 		};
 
 		function fibonacci ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
@@ -317,12 +261,64 @@
 			$('#numbers').append('<p><strong>Fibonacci</strong></p>');	
 			for(var i = 2; i < $quantidade_amostras; i++){							
 				$amostras[i] = $amostras[i-2] % $amostras[i-1];							
-				if(i == 499 || i == 1499 || i == 2999){
-					$s = i+1;
-					$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado - '+$s+' amostras</strong></p>');
-				}				
-				//$('#numbers').append('<p class="num_sorteado_multi">'+i+'=>'+$amostras[i]+'</p>');
+			}
+			calcula_chi_quadradido($amostras);
+		};
+
+		function calcula_chi_quadradido ($array){								
+			$teste = [];
+			$chi = 0;
+			$esperado = (100/500).toFixed(3);			
+			for(var i = 0; i < 500; i++){		
+				$teste[$amostras[i]] = 0;				
 			}			
+			for (var key in $teste) {
+				for(var i = 0; i < 500; i++){
+					if($amostras[i] == key){						
+						$teste[key] = $teste[key]+1; 						
+					}
+				}							  
+			}	
+			for(var key in $teste){							
+				$chi = $chi + Math.pow((($teste[key]*$esperado) - $esperado), 2) / $esperado;
+			}			
+			$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado 500 amostras</strong>: '+$chi.toFixed(2)+'</p>');
+
+			$teste = [];
+			$chi = 0;
+			$esperado = (100/1500).toFixed(3);			
+			for(var i = 0; i < 1500; i++){		
+				$teste[$amostras[i]] = 0;				
+			}			
+			for (var key in $teste) {
+				for(var i = 0; i < 1500; i++){
+					if($amostras[i] == key){						
+						$teste[key] = $teste[key]+1; 						
+					}
+				}							  
+			}			
+			for(var key in $teste){							
+				$chi = $chi + Math.pow((($teste[key]*$esperado) - $esperado), 2) / $esperado;
+			}			
+			$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado 1500 amostras</strong>: '+$chi.toFixed(2)+'</p>');
+
+			$teste = [];
+			$chi = 0;
+			$esperado = (100/3000).toFixed(3);			
+			for(var i = 0; i < 3000; i++){		
+				$teste[$amostras[i]] = 0;				
+			}			
+			for (var key in $teste) {
+				for(var i = 0; i < 3000; i++){
+					if($amostras[i] == key){	
+						$teste[key] = $teste[key]+1; 						
+					}
+				}							  
+			}			
+			for(var key in $teste){							
+				$chi = $chi + Math.pow((($teste[key]*$esperado) - $esperado), 2) / $esperado;
+			}			
+			$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado 300 amostras</strong>: '+$chi.toFixed(2)+'</p>');	
 		};
 
   </script>  

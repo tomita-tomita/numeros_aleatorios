@@ -1,5 +1,5 @@
 # numeros_aleatorios
 
-Implementação do método "Quadrado do meio" para gerar números aleatórios.
+Implementação dos método Quadrado do Meio, Congruente Linear Potência, Congruente Linear Adaptado, Congruente Multiplicativo e Atraso de Fibonacci para gerar números aleatórios.
 
-Esse método fornece as semente para a função random.
+Geradas semente iniciais pela função Math.random() da linguagem JavaScript.
