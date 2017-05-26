@@ -115,8 +115,7 @@
 			limpar();					
 		});
 
-		$('#botao').on('click', function(){
-			limpar();					
+		$('#botao').on('click', function(){					
 			$a = $('#a').val();		
 			$m = $('#m').val();
 			if(!$a || !$m){
@@ -129,8 +128,8 @@
 			}
 		});
 	
-		function limpar(){
-			$('#numbers').html('');
+		function limpar(){			
+			$('#numbers').html('');			
 		};
 
 		function linear_multiplicativo ($a, $m, $quantidade_amostras, $primeira){
