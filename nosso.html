@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+    	<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<title>Random()</title>
+
+    	<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">    	
+    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<div class="col-md-12"  style="margin-top: 2rem">
+  			<div class="panel-group">
+				<div class="panel panel-default">
+      				<div class="panel-heading">Informações</div>
+  					<div class="panel-body">      							
+						<div class="row">
+							<div class="col-lg-6">	
+								<div id="results"></div>
+								<script>
+								  var yqlCallback = function(data) {																		
+									var pub_date = data.query.results.channel.item.pubDate;
+									var desc = data.query.results.channel.description;												
+									var temp_f = data.query.results.channel.item.condition.temp;					
+									var temp_c = parseInt((temp_f - 32) / 1.8);
+									var data = new Date();
+									var hora = data.getHours()+':'+ data.getMinutes()+':'+ data.getSeconds();
+									var segundos = data.getSeconds();									
+									var semente = (temp_f % temp_c) * (segundos+1);									
+									$('#results').append(desc+'<br>Data da medição: '+pub_date+'<br>Data/hora requisição: '+data.toLocaleDateString('pt-br')+' '+ hora
+									+'<br>Temperatura: '+temp_c+'°C'+' / '+temp_f+'°F<br>Semente: <span id="semente_gerada">'+semente+'</span><br>('+temp_c+'%'+temp_f+')*('+segundos+'+1)'
+									);																		
+								  };
+								</script>
+
+								<script src="https://query.yahooapis.com/v1/public/yql?
+								q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='itajai')&format=json&callback=yqlCallback">
+								</script>
+				  			</div>
+						</div> 	
+					</div>		
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-12">
+  			<div class="panel-group">
+				<div class="panel panel-default">
+      				<div class="panel-heading">Dados</div>
+      					<div class="panel-body">
+						<div class="row ">
+				  			<div class="col-md-6">					    		 
+				    			<div class="input-group">
+			    					<label>1ª semente inicial</label>
+			      					<input id="primeira_inicial" type="number" disabled="disabled" class="form-control">					      					      		
+				    			</div>
+				    			<br>
+				    			<div class="input-group">	
+				    				<label>a</label>		    				
+				      				<input id="a" type="number" class="form-control" placeholder="Valor para a">					      					      			
+				    			</div>
+								<br>
+				    			<div class="input-group">	
+				    				<label>m</label>			    				
+				      				<input id="m" type="number" class="form-control" placeholder="Valor para m">					      					      
+				    			</div>
+								<br>																								
+				    			<div class="input-group">		
+				    				<label>Quantidade de amostras</label>		    				
+				      				<input id="qtd_amostras" type="number"  class="form-control" placeholder="Quantidade" value="3000">					      					      					
+				    			</div>
+				    			<div class="row col-md-12" style="margin-top: 1rem;">
+					    			<div>	
+				        				<button class="btn btn-primary" type="button" id="botao_carregar">Carregar</button>					        					       			      		
+				        				<!-- <button class="btn btn-primary" type="button" id="botao_limpar">Limpar</button> -->					        					       			      		
+				        				<button class="btn btn-primary" type="button" id="botao">Sortear!</button>		        					       
+				      				</div>
+			      				</div>		      								    											
+			    			</div>
+			    			<div class="col-lg-6">
+								<strong>Congruente Linear Multiplicativo</strong><br>
+									<span style="padding-left: 2rem">X<sub>n+1</sub> = (a*X<sub>n</sub>) % m</span>
+									<br><br>
+			    			</div>
+		    			</div>    					      				
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+  			<div class="panel-group">
+				<div class="panel panel-default">
+      				<div class="panel-heading">Resultados</div>
+  					<div class="panel-body">      							
+						<div class="row">
+							<div class="col-lg-6">							
+				    			<div id="numbers" class="hide col-md-6">									
+								</div>
+				  			</div>
+						</div> 	
+					</div>		
+				</div>
+			</div>
+		</div>		
+  </body>
+	<script type="text/javascript">
+		$(document).ready(function(){		
+			$('#primeira_inicial').val($('#semente_gerada').text());
+		});
+
+		$('#botao_carregar').on('click', function(){
+			window.location.reload(true);		
+			limpar();					
+		});
+
+		$('#botao').on('click', function(){
+			limpar();					
+			$a = $('#a').val();		
+			$m = $('#m').val();
+			if(!$a || !$m){
+				alert('Verifique os valores de A e M');
+			}else{
+				$primeira = $('#primeira_inicial').val();
+				$quantidade_amostras = $('#qtd_amostras').val();			
+				$('#numbers').removeClass('hide');		
+				linear_multiplicativo($a, $m, $quantidade_amostras, $primeira);	
+			}
+		});
+	
+		function limpar(){
+			$('#numbers').html('');
+		};
+
+		function linear_multiplicativo ($a, $m, $quantidade_amostras, $primeira){
+			$amostras = [];
+			$amostras[0] = $primeira;
+			$('#numbers').append('<p><strong>Linear Multiplicativo (Implementação)</strong></p>');			
+			for(var i = 1; i < $quantidade_amostras; i++){							
+				$amostras[i] = ($a * $amostras[i-1]) % $m;					
+			}
+			calcula_chi_quadradido($amostras);
+		};
+
+		function calcula_chi_quadradido ($array){								
+			$teste = [];
+			$chi = 0;
+			$esperado = (100/500).toFixed(3);			
+			for(var i = 0; i < 500; i++){		
+				$teste[$amostras[i]] = 0;				
+			}			
+			for (var key in $teste) {
+				for(var i = 0; i < 500; i++){
+					if($amostras[i] == key){						
+						$teste[key] = $teste[key]+1; 						
+					}
+				}							  
+			}	
+			for(var key in $teste){							
+				$chi = $chi + Math.pow((($teste[key]*$esperado) - $esperado), 2) / $esperado;
+			}			
+			$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado 500 amostras</strong>: '+$chi.toFixed(2)+'</p>');
+
+			$teste = [];
+			$chi = 0;
+			$esperado = (100/1500).toFixed(3);			
+			for(var i = 0; i < 1500; i++){		
+				$teste[$amostras[i]] = 0;				
+			}			
+			for (var key in $teste) {
+				for(var i = 0; i < 1500; i++){
+					if($amostras[i] == key){						
+						$teste[key] = $teste[key]+1; 						
+					}
+				}							  
+			}			
+			for(var key in $teste){							
+				$chi = $chi + Math.pow((($teste[key]*$esperado) - $esperado), 2) / $esperado;
+			}			
+			$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado 1500 amostras</strong>: '+$chi.toFixed(2)+'</p>');
+
+			$teste = [];
+			$chi = 0;
+			$esperado = (100/3000).toFixed(3);			
+			for(var i = 0; i < 3000; i++){		
+				$teste[$amostras[i]] = 0;				
+			}			
+			for (var key in $teste) {
+				for(var i = 0; i < 3000; i++){
+					if($amostras[i] == key){	
+						$teste[key] = $teste[key]+1; 						
+					}
+				}							  
+			}			
+			for(var key in $teste){							
+				$chi = $chi + Math.pow((($teste[key]*$esperado) - $esperado), 2) / $esperado;
+			}			
+			$('#numbers').append('<p class="num_sorteado_potencia"><strong>Chi-quadrado 300 amostras</strong>: '+$chi.toFixed(2)+'</p>');	
+		};
+
+  </script>  
+</html>
