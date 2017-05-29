@@ -107,7 +107,7 @@
   </body>
 	<script type="text/javascript">
 		$(document).ready(function(){		
-			$('#primeira_inicial').val($('#semente_gerada').text());
+			$('#primeira_inicial').val($('#semente_gerada').text());	
 		});
 
 		$('#botao_carregar').on('click', function(){
@@ -135,12 +135,36 @@
 		function linear_multiplicativo ($a, $m, $quantidade_amostras, $primeira){
 			$amostras = [];
 			$amostras[0] = $primeira;
-			$('#numbers').append('<p><strong>Linear Multiplicativo (Implementação)</strong></p>');			
-			for(var i = 1; i < $quantidade_amostras; i++){							
-				$amostras[i] = ($a * $amostras[i-1]) % $m;					
+			$('#numbers').append('<p><strong>Linear Multiplicativo (Implementação)</strong></p>');				
+			for(var i = 1; i <= $quantidade_amostras; i++){					
+				$amostras[i] = ($a * $amostras[i-1]) % $m;	
 			}
+			imprime_csv($amostras);
 			calcula_chi_quadradido($amostras);
 		};
+
+		function imprime_csv ($amostras){
+			var A = [['posição','Número gerado']];
+
+			for(var j=0; j<$amostras.length; ++j){ 
+			    A.push([j, $amostras[j]]);
+			}
+
+			var csvRows = [];
+
+			for(var i=0, l=A.length; i<l; ++i){
+			    csvRows.push(A[i].join(','));
+			}
+
+			var csvString = csvRows.join("%0A");
+			var a         = document.createElement('a');
+			a.href        = 'data:attachment/csv,' + csvString;
+			a.target      = '_blank';
+			a.download    = 'myFile.csv';
+
+			document.body.appendChild(a);
+			a.click();
+		}
 
 		function calcula_chi_quadradido ($array){								
 			$teste = [];

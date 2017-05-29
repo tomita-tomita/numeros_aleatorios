@@ -29,7 +29,7 @@
 								<br>
 				    			<div class="input-group">	
 				    				<label>a</label>		    				
-				      				<input id="a" type="number" class="form-control" placeholder="Valor para a">					      					      			
+				      				<input id="a" type="number" class="form-control" placeholder="Valor para a" value="16807">					      					      			
 				    			</div>
 								<br>
 				    			<div class="input-group">	
@@ -39,7 +39,7 @@
 								<br>
 				    			<div class="input-group">	
 				    				<label>m</label>			    				
-				      				<input id="m" type="number" class="form-control" placeholder="Valor para m">					      					      
+				      				<input id="m" type="number" class="form-control" placeholder="Valor para m" value="2147483647">					      					      
 				    			</div>
 								<br>																								
 				    			<div class="input-group">		
@@ -158,10 +158,8 @@
 		$('#linear_multiplicativo').on('click', function(){
 			limpar();
 			$primeira = $('#primeira_inicial').val();
-			$segunda = $('#segunda_inicial').val();
-			$a = 16807;
-			$b = $('#b').val();
-			$m = 2147483647;
+			$segunda = $('#segunda_inicial').val();			
+			$b = $('#b').val();			
 			$quantidade_amostras = $('#qtd_amostras').val();			
 			$('#numbers').removeClass('hide');		
 			linear_multiplicativo($a, $b, $m, $quantidade_amostras, $primeira, $segunda);	
@@ -191,30 +189,59 @@
 			fibonacci($a, $b, $m, $quantidade_amostras, $primeira, $segunda);			
 		});
 
+		function imprime_csv ($amostras, $metodo){
+			var A = [['posição','Número gerado']];
+
+			for(var j=0; j<$amostras.length; ++j){ 
+			    A.push([j, $amostras[j]]);
+			}
+
+			var csvRows = [];
+
+			for(var i=0, l=A.length; i<l; ++i){
+			    csvRows.push(A[i].join(','));
+			}
+
+			var csvString = csvRows.join("%0A");
+			var a         = document.createElement('a');
+			a.href        = 'data:attachment/csv,' + csvString;
+			a.target      = '_blank';
+			a.download    =  $metodo+'.csv';
+
+			document.body.appendChild(a);
+			a.click();
+		}
+
 		function limpar(){
 			$('#numbers').html('');
 		};
 
+		TODO: verificar Nan
 		function linear_potencia ($a, $m, $quantidade_amostras, $b, $primeira, $segunda){
 			$amostras = [];
 			$('#numbers').append('<p><strong>Linear Potencia</strong></p>');						
-			for(var i = 0; i < $quantidade_amostras; i++){				
+			for(var i = 0; i < $quantidade_amostras; i++){						
 				$amostras[i] = (Math.pow($a, i) % $m);				
-			}
+			}			
+			imprime_csv($amostras, 'Linear Potencias');
 			calcula_chi_quadradido($amostras);
 		};
 
 		function linear_adaptado ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
-			$amostras = [];
-			$amostras[0] = $primeira
-			$a = 16807;
-			$b = $('#b').val();
-			$m = 2147483647;	
-			$('#numbers').append('<p><strong>Linear Adaptado</strong></p>');				
-			for(var i = 1; i < $quantidade_amostras; i++){							
-				$amostras[i] = (($a * $amostras[i-1]) + $b) % $m;
+			if(!$b){
+				limpar();
+				alert('Verifique o valor de b');				
+			}else{
+				$amostras = [];
+				$amostras[0] = $primeira			
+				$b = $('#b').val();			
+				$('#numbers').append('<p><strong>Linear Adaptado</strong></p>');				
+				for(var i = 1; i < $quantidade_amostras; i++){							
+					$amostras[i] = (($a * $amostras[i-1]) + $b) % $m;
+				}
+				imprime_csv($amostras, 'Linear Adaptado');
+				calcula_chi_quadradido($amostras);							
 			}
-			calcula_chi_quadradido($amostras);							
 		};
 
 		function linear_multiplicativo ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
@@ -224,9 +251,11 @@
 			for(var i = 1; i < $quantidade_amostras; i++){							
 				$amostras[i] = ($a * $amostras[i-1]) % $m;					
 			}
+			imprime_csv($amostras, 'Linear Multiplicativo');
 			calcula_chi_quadradido($amostras);
 		};
 
+		TODO: verificar Nan
 		function quadrado_meio ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
 			$amostras = [];
 			$amostras[0] = $primeira;
@@ -250,10 +279,11 @@
 				}			
 				$amostras[i] = Math.pow($novaSemente,2);	  										
 			}
-			console.log($amostras);
+			imprime_csv($amostras, 'Quadrado do Meio');
 			calcula_chi_quadradido($amostras);
 		};
 
+		TODO: verificar Nan
 		function fibonacci ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
 			$amostras = [];
 			$amostras[0] = $primeira;
@@ -262,6 +292,7 @@
 			for(var i = 2; i < $quantidade_amostras; i++){							
 				$amostras[i] = $amostras[i-2] % $amostras[i-1];							
 			}
+			imprime_csv($amostras, 'Fibonacci');
 			calcula_chi_quadradido($amostras);
 		};
 
