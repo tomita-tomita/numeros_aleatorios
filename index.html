@@ -216,7 +216,7 @@
 			$('#numbers').html('');
 		};
 
-		TODO: verificar Nan
+		TODO: //verificar
 		function linear_potencia ($a, $m, $quantidade_amostras, $b, $primeira, $segunda){
 			$amostras = [];
 			$('#numbers').append('<p><strong>Linear Potencia</strong></p>');						
@@ -255,7 +255,8 @@
 			calcula_chi_quadradido($amostras);
 		};
 
-		TODO: verificar Nan
+		TODO: //verificar
+		//caso de gerar 01**
 		function quadrado_meio ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
 			$amostras = [];
 			$amostras[0] = $primeira;
@@ -283,14 +284,19 @@
 			calcula_chi_quadradido($amostras);
 		};
 
-		TODO: verificar Nan
+		TODO: //verificar
 		function fibonacci ($a, $b, $m, $quantidade_amostras, $primeira, $segunda){
 			$amostras = [];
 			$amostras[0] = $primeira;
 			$amostras[1] = $segunda;
 			$('#numbers').append('<p><strong>Fibonacci</strong></p>');	
-			for(var i = 2; i < $quantidade_amostras; i++){							
-				$amostras[i] = $amostras[i-2] % $amostras[i-1];							
+			for(var i = 2; i < $quantidade_amostras; i++){
+				if($amostras[i-1] == 0){
+					var n = 1;
+				}else{
+					var n = $amostras[i-1];
+				}
+				$amostras[i] = $amostras[i-2] % n;							
 			}
 			imprime_csv($amostras, 'Fibonacci');
 			calcula_chi_quadradido($amostras);
