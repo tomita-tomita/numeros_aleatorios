@@ -235,7 +235,7 @@
 			}else{
 				$amostras = [];
 				$amostras[0] = $primeira			
-				$b = $('#b').val();			
+				$b = parseInt($('#b').val());			
 				$('#numbers').append('<p><strong>Linear Adaptado</strong></p>');				
 				for(var i = 1; i < $quantidade_amostras; i++){							
 					$amostras[i] = (($a * $amostras[i-1]) + $b) % $m;
